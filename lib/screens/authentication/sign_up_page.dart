@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:grocery_store/backend/service_provider.dart';
 import 'package:grocery_store/common_widgets/button_widget.dart';
 import 'package:grocery_store/common_widgets/text_form_field.dart';
 import 'package:grocery_store/screens/authentication/login_page.dart';
+import 'package:grocery_store/screens/splash_screen.dart';
 import 'package:grocery_store/styles/colors.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -21,6 +23,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool passwordVisibility = true;
   @override
   Widget build(BuildContext context) {
+    ServiceProvider serviceProvider = ServiceProvider();
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -139,12 +142,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 color: Colors.white,
               ),
               CustomButton(
-                onpressed: () {
-                  // Navigator.of(context).push(
-                  //   MaterialPageRoute(
-                  //     builder: (context) => const SplashScreen(),
-                  //   ),
-                  // );
+                onpressed: () async {
+                  await serviceProvider.creatingTheUser(
+                    fullName.text,
+                    address.text,
+                    email.text,
+                    password.text,
+                  );
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const SplashScreen(),
+                    ),
+                  );
                 },
                 buttonText: 'Sign up',
               ),
